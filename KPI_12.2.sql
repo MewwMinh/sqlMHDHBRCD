@@ -7,7 +7,7 @@ ngay as(
     inner join tbl_mhdh_brcd_mapping_ttvt b
     on a.ma_hrm_nvkt_ql_tb = b.manhanvien
     where a.ngay_bh between to_date('10102025','ddmmyyyy') and to_date('11102025','ddmmyyyy')
-    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh = 6 and a.ngay_bh = a.ngay_ht
+    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh <> 6 and a.hen_sua_tu is null
     group by a.ma_tinh, b.donvi
     ),
 lk_thang as (
@@ -16,7 +16,7 @@ lk_thang as (
     inner join tbl_mhdh_brcd_mapping_ttvt b
     on a.ma_hrm_nvkt_ql_tb = b.manhanvien
     where a.ngay_bh between to_date('01102025','ddmmyyyy') and to_date('11102025','ddmmyyyy')
-    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh = 6 and a.ngay_bh = a.ngay_ht
+    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh <> 6 and a.hen_sua_tu is null
     group by a.ma_tinh, b.donvi
     ),
 lk_nam as (
@@ -25,13 +25,13 @@ lk_nam as (
     inner join tbl_mhdh_brcd_mapping_ttvt b
     on a.ma_hrm_nvkt_ql_tb = b.manhanvien
     where a.ngay_bh between to_date('01012025','ddmmyyyy') and to_date('11102025','ddmmyyyy')
-    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh = 6 and a.ngay_bh = a.ngay_ht
+    and a.chuyen_phieu not in (1, 2, 4) and a.trang_thai_bh <> 6 and a.hen_sua_tu is null
     group by a.ma_tinh, b.donvi
     )
 
 select 
-    'KPI_09' as ma_kpi, 
-    'Số phiếu KPSC tiếp nhận trong ngày đã xử lý ' as kpi_name,
+    'KPI_12.2' as ma_kpi, 
+    'Số phiếu tồn KPSC chưa xử lý (không hẹn)' as kpi_name,
     a.ma_tinh, a.ttvt, a.kpi_value kpi_value, b.kpi_value kpi_acc_value, c.kpi_value dl_nam,
     'D' as period_type, 
     '1010' as period_index, --mmdd
@@ -43,3 +43,5 @@ on a.ma_tinh = b.ma_tinh and a.ttvt = b.ttvt
 inner join lk_nam c
 on a.ma_tinh = c.ma_tinh and a.ttvt = c.ttvt
 order by a.ma_tinh, a.ttvt;
+
+--dang sai
